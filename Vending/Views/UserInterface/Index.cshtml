@@ -1,33 +1,48 @@
 ﻿@model VendingMachine
 
-<h2>Vending Machine</h2>
+<h1>Vending Machine</h1>
 
-<p>Deposited Amount: @Model.DepositedAmount</p>
+<h4>Deposited Amount: @Model.DepositedAmount</h4>
 
 <div>
-    <button class="deposit-button" data-amount="1">1 Ruble</button>
-    <button class="deposit-button" data-amount="2">2 Rubles</button>
-    <button class="deposit-button" data-amount="5">5 Rubles</button>
-    <button class="deposit-button" data-amount="10">10 Rubles</button>
+    <button class="deposit-button btn-primary" data-amount="1">1 Ruble</button>
+    <button class="deposit-button btn-primary" data-amount="2">2 Rubles</button>
+    <button class="deposit-button btn-primary" data-amount="5">5 Rubles</button>
+    <button class="deposit-button btn-primary" data-amount="10">10 Rubles</button>
 </div>
 
 <hr />
 
 <div>
-    <button class="get-change-button">Get Change</button>
+    <button class="get-change-button btn-primary">Get Change</button>
 </div>
 
 <hr />
 
-@foreach (var drink in Model.Drinks)
-{
-    <div>
-        <p>Name: @drink.Name</p>
-        <p>Price: @drink.Price</p>
-        <p>Quantity: @drink.Quantity</p>
-        <button class="select-drink-button" data-id="@drink.Id">Select</button>
-    </div>
-}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var drink in Model.Drinks)
+        {
+            <tr>
+                <td>@drink.Name</td>
+                <td>@drink.Price</td>
+                <td>@drink.Quantity</td>
+                <td>
+                    <button class="select-drink-button btn-primary" data-id="@drink.Id">Select</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
 
 @section scripts {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
