@@ -1,0 +1,35 @@
+﻿@model VendingMachine
+
+<h2>Admin Interface</h2>
+
+<form method="post" action="/AdminInterface/AddDrink">
+    <h3>Add Drink</h3>
+    <input type="text" name="Name" placeholder="Name" required />
+    <input type="number" step="0.01" name="Price" placeholder="Price" required />
+    <input type="number" name="Quantity" placeholder="Quantity" required />
+    <button type="submit">Add</button>
+</form>
+
+<h3>Delete Drink</h3>
+@foreach (var drink in Model.Drinks)
+{
+    <form method="post" action="/AdminInterface/DeleteDrink">
+        <input type="hidden" name="drinkId" value="@drink.Id" />
+        <p>Name: @drink.Name</p>
+        <p>Price: @drink.Price</p>
+        <p>Quantity: @drink.Quantity</p>
+        <button type="submit">Delete</button>
+    </form>
+}
+
+<h3>Update Drink</h3>
+@foreach (var drink in Model.Drinks)
+{
+    <form method="post" action="/AdminInterface/UpdateDrink">
+        <input type="hidden" name="Id" value="@drink.Id" />
+        <input type="text" name="Name" value="@drink.Name" required />
+        <input type="number" step="0.01" name="Price" value="@drink.Price" required />
+        <input type="number" name="Quantity" value="@drink.Quantity" required />
+        <button type="submit">Update</button>
+    </form>
+}

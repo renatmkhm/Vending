@@ -1,0 +1,73 @@
+﻿@model VendingMachine
+
+<h2>Vending Machine</h2>
+
+<p>Deposited Amount: @Model.DepositedAmount</p>
+
+<div>
+    <button class="deposit-button" data-amount="1">1 Ruble</button>
+    <button class="deposit-button" data-amount="2">2 Rubles</button>
+    <button class="deposit-button" data-amount="5">5 Rubles</button>
+    <button class="deposit-button" data-amount="10">10 Rubles</button>
+</div>
+
+<hr />
+
+@foreach (var drink in Model.Drinks)
+{
+    <div>
+        <p>Name: @drink.Name</p>
+        <p>Price: @drink.Price</p>
+        <p>Quantity: @drink.Quantity</p>
+        <button class="select-drink-button" data-id="@drink.Id">Select</button>
+    </div>
+}
+
+<div id="change-container"></div>
+
+@section scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.deposit-button').click(function () {
+                var amount = $(this).data('amount');
+                $.ajax({
+                    type: 'POST',
+                    url: '/UserInterface/Deposit',
+                    data: { amount: amount },
+                    success: function () {
+                        location.reload();
+                    }
+                });
+            });
+
+            $('.select-drink-button').click(function () {
+                var drinkId = $(this).data('id');
+                $.ajax({
+                    type: 'POST',
+                    url: '/UserInterface/SelectDrink',
+                    data: { drinkId: drinkId },
+                    success: function (response) {
+                        if (response.success) {
+                            $('#change-container').html('Change: ' + response.message);
+                            location.reload();
+                        } else {
+                            alert(response.message);
+                        }
+                    }
+                });
+            });
+
+            $('#get-change-button').click(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '/UserInterface/GetChange',
+                    success: function (response) {
+                        $('#change-container').html('Change: ' + response);
+                        location.reload();
+                    }
+                });
+            });
+        });
+    </script>
+}
