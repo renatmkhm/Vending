@@ -8,14 +8,19 @@ namespace Vending.Controllers
     public class AdminInterfaceController : Controller
     {
         private readonly VendingMachineContext _context;
+        private const string AdminSecretKey = "admin";
 
         public AdminInterfaceController(VendingMachineContext context)
         {
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string secretkey)
         {
+            if (secretkey != AdminSecretKey)
+            {
+                return Unauthorized(); 
+            }
             var vendingMachine = _context.VendingMachines.Include(vm => vm.Drinks).FirstOrDefault();
             return View(vendingMachine);
         }
