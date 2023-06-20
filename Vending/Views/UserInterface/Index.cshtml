@@ -13,6 +13,12 @@
 
 <hr />
 
+<div>
+    <button class="get-change-button">Get Change</button>
+</div>
+
+<hr />
+
 @foreach (var drink in Model.Drinks)
 {
     <div>
@@ -22,8 +28,6 @@
         <button class="select-drink-button" data-id="@drink.Id">Select</button>
     </div>
 }
-
-<div id="change-container"></div>
 
 @section scripts {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -58,7 +62,7 @@
                 });
             });
 
-            $('#get-change-button').click(function () {
+            $('.get-change-button').click(function () {
                 $.ajax({
                     type: 'POST',
                     url: '/UserInterface/GetChange',
