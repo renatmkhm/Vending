@@ -20,33 +20,17 @@ namespace Vending
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddAuthorization();
-
-            //services.AddAuthentication("AdminCookieAuthentication")
-            //    .AddCookie("AdminCookieAuthentication", options =>
-            //    {
-            //        options.Cookie.Name = "AdminCookie";
-            //        options.LoginPath = "/Admin/Login";
-            //    });
-
-
-            services.AddSession();
-
             services.AddDistributedMemoryCache();
-
-            services.AddSession(options =>
-            {
-                options.Cookie.Name = "YourSessionCookieName";
-                options.IdleTimeout = TimeSpan.FromMinutes(20);
-            });
 
             services.AddDbContext<VendingMachineContext>(options =>
                 options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddScoped<DbInitializer>();
+
             services.AddControllersWithViews();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, VendingMachineContext dbContext)
         {
             if (env.IsDevelopment())
             {
@@ -58,14 +42,12 @@ namespace Vending
                 app.UseHsts();
             }
 
-            app.UseSession();
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            DbInitializer.Initialize(dbContext);
 
             app.UseEndpoints(endpoints =>
             {

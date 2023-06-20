@@ -31,7 +31,7 @@ namespace Vending.Controllers
             var vendingMachine = _context.VendingMachines.Include(vm => vm.Drinks).FirstOrDefault();
             vendingMachine.Drinks.Add(drink);
             _context.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { secretkey = AdminSecretKey });
         }
 
         [HttpPost]
@@ -46,7 +46,7 @@ namespace Vending.Controllers
                 _context.SaveChanges();
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { secretkey = AdminSecretKey });
         }
 
         [HttpPost]
@@ -63,7 +63,7 @@ namespace Vending.Controllers
                 _context.SaveChanges();
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { secretkey = AdminSecretKey });
         }
     }
 }
